@@ -1,0 +1,10 @@
+include 'api'
+include 'bitstream'
+
+include 'huffman'
+include 'bwt'
+include 'lzw'
+include 'rle'
+include 'mtf'
+
+include 'cli'

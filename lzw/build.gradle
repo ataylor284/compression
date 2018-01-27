@@ -1,0 +1,9 @@
+apply plugin: 'jacoco'
+
+dependencies {
+    compile project(':bitstream')
+    compile project(':api')
+    testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+}
+
+check.dependsOn jacocoTestReport

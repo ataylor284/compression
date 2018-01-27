@@ -1,0 +1,29 @@
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'groovy'
+    apply plugin: 'jacoco'
+
+    repositories {
+        mavenCentral()
+    }
+
+    sourceCompatibility = 1.9
+    targetCompatibility = 1.9
+
+    compileJava {
+        options.compilerArgs << '-Xlint:all'
+    }
+}
+
+
+task jacocoRootTestReport(type: JacocoReport) {
+    dependsOn = subprojects.check
+    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(subprojects.sourceSets.main.output)
+    executionData = files(subprojects.jacocoTestReport.executionData)
+    doFirst {
+        executionData = executionData.filter { it.exists() }
+        println (executionData as List)
+    }
+}
+check.dependsOn jacocoRootTestReport
