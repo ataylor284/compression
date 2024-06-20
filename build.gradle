@@ -1,3 +1,7 @@
+plugins {
+    id("com.github.ben-manes.versions") version "0.51.0"  // gradle dependencyUpdates
+}
+
 allprojects {
     apply plugin: 'java'
     apply plugin: 'groovy'
@@ -11,19 +15,18 @@ allprojects {
     targetCompatibility = 1.9
 
     compileJava {
-        options.compilerArgs << '-Xlint:all'
+        doFirst {
+            options.compilerArgs << '-Xlint:all'
+        }
+    }
+
+    jacoco {
+        toolVersion = "0.8.12"
+    }
+    test {
+        finalizedBy jacocoTestReport
+    }
+    jacocoTestReport {
+        dependsOn test
     }
 }
-
-
-task jacocoRootTestReport(type: JacocoReport) {
-    dependsOn = subprojects.check
-    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
-    classDirectories = files(subprojects.sourceSets.main.output)
-    executionData = files(subprojects.jacocoTestReport.executionData)
-    doFirst {
-        executionData = executionData.filter { it.exists() }
-        println (executionData as List)
-    }
-}
-check.dependsOn jacocoRootTestReport

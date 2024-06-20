@@ -1,9 +1,11 @@
-apply plugin: 'jacoco'
-
 dependencies {
-    compile project(':bitstream')
-    compile project(':api')
-    testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+    implementation project(':bitstream')
+    implementation project(':api')
 }
-
-check.dependsOn jacocoTestReport
+testing {
+    suites {
+        test {
+            useSpock('2.4-M4-groovy-4.0')
+        }
+    }
+}

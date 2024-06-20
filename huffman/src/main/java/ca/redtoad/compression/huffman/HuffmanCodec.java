@@ -62,7 +62,7 @@ public class HuffmanCodec implements Codec {
 
     /**
      * Generates a Huffman tree for the block.  Generates byte
-     * frequencies and a tree that balances the freqencies as evenly
+     * frequencies and a tree that balances the frequencies as evenly
      * as possible.
      */
     private HuffmanNode genHuffmanTree(byte[] block, int blocksize) throws IOException {

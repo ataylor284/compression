@@ -20,6 +20,7 @@ public class RleCodec implements Codec {
     }
 
     public void encode(InputStream input, OutputStream out) throws IOException {
+        Stats stats = new Stats();
         PushbackInputStream pinput = new PushbackInputStream(input);
         int i;
         while ((i = pinput.read()) != -1) {
@@ -29,10 +30,17 @@ public class RleCodec implements Codec {
                 count++;
             }
             if (count <= 3 && i != RUN_CODE) {
+                if (count > 1) {
+                    stats.shortRuns += 1;
+                }
                 for (int k = 0; k < count; k++) {
                     out.write(i);
                 }
             } else {
+                stats.runCount += 1;
+                if (count > stats.longestRun) {
+                    stats.longestRun = count;
+                }
                 out.write(RUN_CODE);
                 out.write(count);
                 out.write(i);
@@ -43,6 +51,9 @@ public class RleCodec implements Codec {
                 pinput.unread(j);
             }
         }
+        System.out.println("runCount = " + stats.runCount);
+        System.out.println("longestRun = " + stats.longestRun);
+        System.out.println("shortRuns = " + stats.shortRuns);
     }
 
     public void decode(InputStream input, OutputStream out) throws IOException {
@@ -58,5 +69,11 @@ public class RleCodec implements Codec {
                 out.write(i);
             }
         }
+    }
+
+    private static class Stats {
+        int runCount;
+        int longestRun;
+        int shortRuns;
     }
 }

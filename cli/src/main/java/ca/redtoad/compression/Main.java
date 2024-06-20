@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -18,6 +19,7 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 import static org.apache.commons.cli.Option.builder;
 
@@ -27,7 +29,7 @@ public class Main {
         .addOption(builder("a").longOpt("algorithm").hasArg().argName("algorithm").desc("algorithm").build())
         .addOption(builder("h").longOpt("help").desc("print this help").build());
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException, ParseException {
         CommandLineParser parser = new DefaultParser();
         CommandLine line = parser.parse(options, args);
 
@@ -79,7 +81,7 @@ public class Main {
                           decompressing ? "decompressing" : "compressing",
                           inCounter.getCount(),
                           outCounter.getCount(),
-                          ((100.0 * outCounter.getCount()) / inCounter.getCount()),
+                          (100.0 * outCounter.getCount()) / inCounter.getCount(),
                           0.001 * elapsed);
 
     }

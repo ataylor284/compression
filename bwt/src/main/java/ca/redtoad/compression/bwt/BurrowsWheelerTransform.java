@@ -33,7 +33,7 @@ public class BurrowsWheelerTransform implements Codec {
         int len;
         while ((len = input.read()) != -1) {
             int eofChar = input.read();
-            int nread = input.read(buffer, 0, len + 1);
+            input.read(buffer, 0, len + 1);
 
             int bwtSize = len + 1;
             byte[][] rotations = new byte[bwtSize][];
@@ -96,8 +96,8 @@ public class BurrowsWheelerTransform implements Codec {
 
     private int compareByteArrays(byte[] left, byte[] right) {
         for (int i = 0; i < left.length && i < right.length; i++) {
-            int a = (left[i] & 0xff);
-            int b = (right[i] & 0xff);
+            int a = left[i] & 0xff;
+            int b = right[i] & 0xff;
             if (a != b) {
                 return a - b;
             }

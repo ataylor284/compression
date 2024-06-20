@@ -1,22 +1,22 @@
 plugins {
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '1.2.4'
+    id 'com.github.johnrengelman.shadow' version '8.1.1' // gradle shadowJar
 }
 
 dependencies {
-    compile project(':api')
-    compile('com.google.guava:guava:23.2-jre') {
+    implementation project(':api')
+    implementation('com.google.guava:guava:33.2.1-jre') {
         exclude group: 'org.codehaus.mojo', module: 'animal-sniffer-annotations'
         exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
         exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
     }
-    compile('commons-cli:commons-cli:1.4')
+    implementation('commons-cli:commons-cli:1.8.0')
 
-    runtime project(':huffman')
-    runtime project(':lzw')
-    runtime project(':rle')
-    runtime project(':bwt')
-    runtime project(':mtf')
+    runtimeOnly project(':huffman')
+    runtimeOnly project(':lzw')
+    runtimeOnly project(':rle')
+    runtimeOnly project(':bwt')
+    runtimeOnly project(':mtf')
 }
 
 mainClassName = "ca.redtoad.compression.Main"
@@ -24,14 +24,13 @@ mainClassName = "ca.redtoad.compression.Main"
 jar {
   manifest {
     attributes(
-      'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
       'Main-Class': mainClassName
     )
   }
 }
 
 shadowJar {
-        mergeServiceFiles()
+    mergeServiceFiles()
 }
 
 build.dependsOn shadowJar

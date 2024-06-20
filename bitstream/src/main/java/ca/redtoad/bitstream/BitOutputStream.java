@@ -20,7 +20,7 @@ public class BitOutputStream implements AutoCloseable {
         while (totalBits >= 8) {
             out.write((byte) partial);
             totalBits -= 8;
-            partial = (partial >> 8);
+            partial = partial >> 8;
         }
         partialBits = totalBits;
     }
